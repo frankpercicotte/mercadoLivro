@@ -1,8 +1,8 @@
 package com.mercadolivro.service
 
+import com.mercadolivro.exceptions.NotFoundException
 import com.mercadolivro.model.CustomerModel
 import com.mercadolivro.repository.CustomerRepository
-import com.mercadolivro.exceptions.NotFoundException
 import org.springframework.stereotype.Service
 
 @Service
