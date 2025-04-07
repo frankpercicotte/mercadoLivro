@@ -6,10 +6,7 @@ import com.mercadolivro.extension.toCustomerModel
 import com.mercadolivro.model.CustomerModel
 import com.mercadolivro.service.CustomerService
 import org.springframework.http.HttpStatus
-import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
-import org.springframework.web.client.HttpStatusCodeException
-import org.springframework.web.server.ResponseStatusException
 
 @RestController
 @RequestMapping("customer")
@@ -30,7 +27,7 @@ class CustomerController(
 
     @GetMapping("/{id}")
     fun getCustomer(@PathVariable id: Int): CustomerModel {
-        return customerService.getCustomer(id)
+        return customerService.getById(id)
     }
 
     @PutMapping("/{id}")
