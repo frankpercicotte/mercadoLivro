@@ -9,7 +9,7 @@ import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
 
 @RestController
-@RequestMapping("book")
+@RequestMapping("books")
 class BookController(
     val customerService: CustomerService,
     val bookService: BookService
@@ -28,7 +28,23 @@ class BookController(
 
     @GetMapping("/actives")
     fun findActives(): List<BookModel>{
+
         return  bookService.findActives()
+    }
+
+    @GetMapping("/{id}")
+    fun findById(@PathVariable id: Int): BookModel{
+        return bookService.findById(id)
+    }
+
+//    @PutMapping("/{id}")
+//    fun putActives(@PathVariable id: Int, @RequestBody requestBody: RequestBody): BookModel{
+//        return  /* bookService.putBook(id, requestBody) */
+//    }
+
+    @DeleteMapping("/books/{id}")
+    fun deleteBook(){
+        return bookService.deleteBook()
     }
 
 }

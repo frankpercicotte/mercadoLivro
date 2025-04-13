@@ -9,4 +9,5 @@ interface BookRepository : CrudRepository<BookModel, Int> {
     fun findByNameContaining(name: String): List<BookModel>
     abstract fun findByStatus(status: BookStatus): List<BookModel>
 
+
 }
