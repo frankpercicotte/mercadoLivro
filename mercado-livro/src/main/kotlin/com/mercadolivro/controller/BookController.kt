@@ -1,6 +1,7 @@
 package com.mercadolivro.controller
 
 import com.mercadolivro.controller.request.PostBookRequest
+import com.mercadolivro.controller.request.PutBookRequest
 import com.mercadolivro.extension.toBookModel
 import com.mercadolivro.model.BookModel
 import com.mercadolivro.service.BookService
@@ -28,7 +29,6 @@ class BookController(
 
     @GetMapping("/actives")
     fun findActives(): List<BookModel>{
-
         return  bookService.findActives()
     }
 
@@ -37,14 +37,15 @@ class BookController(
         return bookService.findById(id)
     }
 
-//    @PutMapping("/{id}")
-//    fun putActives(@PathVariable id: Int, @RequestBody requestBody: RequestBody): BookModel{
-//        return  /* bookService.putBook(id, requestBody) */
-//    }
-
-    @DeleteMapping("/books/{id}")
-    fun deleteBook(){
-        return bookService.deleteBook()
+    @PutMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    fun putActives(@PathVariable id: Int, @RequestBody book : PutBookRequest){
+        bookService.update(id, book)
     }
 
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    fun deleteBook(@PathVariable id: Int){
+        return bookService.delete(id)
+    }
 }

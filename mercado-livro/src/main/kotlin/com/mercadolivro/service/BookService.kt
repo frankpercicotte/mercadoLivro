@@ -1,10 +1,13 @@
 package com.mercadolivro.service
 
+import com.mercadolivro.controller.request.PutBookRequest
 import com.mercadolivro.enums.BookStatus
+import com.mercadolivro.extension.toBookModel
 import com.mercadolivro.model.BookModel
 import com.mercadolivro.repository.BookRepository
+import com.mercadolivro.exceptions.NotFoundException
 import org.springframework.stereotype.Service
-import java.util.*
+
 
 @Service
 class BookService(
@@ -19,19 +22,19 @@ class BookService(
 
     fun findActives(): List<BookModel> = bookRepository.findByStatus(BookStatus.ATIVO).toList()
 
-    fun findById(id: Int): BookModel = bookRepository.findById(id).orElseThrow()
-
-    fun putBook(id : Int, book: BookModel): BookModel {
-        var findBook : BookModel = bookRepository.findById(id).orElseThrow()
-        findBook = book
-        bookRepository.save(findBook)
-        return book
+    fun findById(id: Int): BookModel{
+        return bookRepository.findById(id).orElseThrow(){ NotFoundException("Book with id $id not found") }
     }
 
-    fun deleteBook() {
-        return
+    fun update(id: Int, book: PutBookRequest) {
+        val bookSaved = findById(id)
+        bookRepository.save(book.toBookModel(bookSaved))
     }
 
-
+    fun delete(id: Int) {
+        //Never delete book, only change status to CANCELADO
+        val book : BookModel = findById(id)
+        bookRepository.save(book)
+    }
 
 }

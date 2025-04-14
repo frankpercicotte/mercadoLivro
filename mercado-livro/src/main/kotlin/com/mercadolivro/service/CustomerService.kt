@@ -26,17 +26,18 @@ class CustomerService(
     }
 
     fun update(customer: CustomerModel) {
-        if(!customerRepository.existsById(customer.id!!)){
-            throw NotFoundException("Customer not found, ID ${customer.id}")
-        }
+        ensureCustomerExists(customer.id)
         customerRepository.save(customer)
     }
 
     fun delete(id: Int) {
-        if(!customerRepository.existsById(id)) {
-            throw NotFoundException("Customer not found, ID $id")
-        }
+        ensureCustomerExists(id)
         customerRepository.deleteById(id)
     }
 
+    private fun ensureCustomerExists(id: Int?) {
+        if (id == null || !customerRepository.existsById(id)) {
+            throw NotFoundException("Customer not found, ID $id")
+        }
+    }
 }
