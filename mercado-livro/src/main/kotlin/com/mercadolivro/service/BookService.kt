@@ -6,6 +6,7 @@ import com.mercadolivro.extension.toBookModel
 import com.mercadolivro.model.BookModel
 import com.mercadolivro.repository.BookRepository
 import com.mercadolivro.exceptions.NotFoundException
+import com.mercadolivro.model.CustomerModel
 import org.springframework.stereotype.Service
 
 
@@ -35,6 +36,14 @@ class BookService(
         //Never delete book, only change status to CANCELADO
         val book : BookModel = findById(id)
         bookRepository.save(book)
+    }
+
+    fun deleteByCustomer(customer: com.mercadolivro.model.CustomerModel) {
+        val books = bookRepository.findByCustomer(customer)
+        for(book in books){
+            book.status = BookStatus.DELETADO
+        }
+        bookRepository.saveAll(books)
     }
 
 }
