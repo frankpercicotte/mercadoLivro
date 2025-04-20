@@ -5,3 +5,19 @@
 - Iniciar o docker-compose
 `docker-compose up -d`
 
+## Customer
++ get   
+{host}/customer  
+    -> retorna todos os customers 
+
+{host}/customer?name=xyz 
+
+    retorna todos customers que contenham "xyz"
+
+{host}/customer/{id} 
+
+    retorna o customer referente ao id 
+Error: 
+
+    Caso não exista o id, um erro 404 é retornado.
+
