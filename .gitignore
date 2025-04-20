@@ -39,3 +39,4 @@ out/
 ### volume dados ###
 /mercado-livro/dados/
 /mercado-livro/mysql-data/
+/mysql-data
