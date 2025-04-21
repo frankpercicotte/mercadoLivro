@@ -35,15 +35,20 @@ class BookService(
     }
 
     fun delete(id: Int) {
-        //Never delete book, only change status to CANCELADO
+        //Never delete book, only change status to DELETADO
         val book : BookModel = findById(id)
+        book.status = BookStatus.DELETADO
         bookRepository.save(book)
     }
 
+    //Books with 'DELETADO, CANCELADO, VENDIDO' status can´t change status.
     fun deleteByCustomer(customer: com.mercadolivro.model.CustomerModel) {
         val books = bookRepository.findByCustomer(customer)
+        val booksSet = setOf<BookStatus>(BookStatus.DELETADO, BookStatus.CANCELADO, BookStatus.VENDIDO)
         for(book in books){
-            book.status = BookStatus.DELETADO
+            if(!booksSet.contains(book.status)){
+                book.status = BookStatus.DELETADO
+            }
         }
         bookRepository.saveAll(books)
     }
