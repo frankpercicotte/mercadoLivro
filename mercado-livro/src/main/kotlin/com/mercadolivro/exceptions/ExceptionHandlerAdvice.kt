@@ -16,6 +16,15 @@ class ExceptionHandlerAdvice {
         )
         return ResponseEntity(error, HttpStatus.NOT_FOUND)
     }
+    @ExceptionHandler(NotDeleteException::class)
+    fun handleNotDelete(ex: NotDeleteException): ResponseEntity<ErrorResponse> {
+        val error = ErrorResponse(
+            message = ex.message ?: "Resource cannot delete.",
+            status = HttpStatus.CONFLICT.value(),
+            timestamp = LocalDateTime.now()
+        )
+        return ResponseEntity(error, HttpStatus.CONFLICT)
+    }
 }
 
 data class ErrorResponse(
