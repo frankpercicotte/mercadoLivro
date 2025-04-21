@@ -2,6 +2,7 @@ package com.mercadolivro.service
 
 import com.mercadolivro.controller.request.PutBookRequest
 import com.mercadolivro.enums.BookStatus
+import com.mercadolivro.enums.Erros
 import com.mercadolivro.extension.toBookModel
 import com.mercadolivro.model.BookModel
 import com.mercadolivro.repository.BookRepository
@@ -25,7 +26,7 @@ class BookService(
     fun findActives(pageable: Pageable): Page<BookModel> = bookRepository.findByStatus(BookStatus.ATIVO, pageable)
 
     fun findById(id: Int): BookModel{
-        return bookRepository.findById(id).orElseThrow(){ NotFoundException("Book with id $id not found") }
+        return bookRepository.findById(id).orElseThrow(){ NotFoundException(Erros.BookNotFound.message.format(id)) }
     }
 
     fun update(id: Int, book: PutBookRequest) {
