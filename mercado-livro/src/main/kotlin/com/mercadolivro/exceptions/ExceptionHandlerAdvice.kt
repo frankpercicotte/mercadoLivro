@@ -46,4 +46,16 @@ class ExceptionHandlerAdvice {
         )
         return ResponseEntity(error, HttpStatus.CONFLICT)
     }
+
+    @ExceptionHandler(NotPutException::class)
+    fun handleNotPut(ex: NotPutException): ResponseEntity<ErrorResponse> {
+        val error = ErrorResponse(
+            message = ex.message ?: "Resource cannot update.",
+            status = HttpStatus.CONFLICT.value(),
+            timestamp = LocalDateTime.now(),
+            null
+
+        )
+        return ResponseEntity(error, HttpStatus.CONFLICT)
+    }
 }

@@ -1,6 +1,8 @@
 package com.mercadolivro.controller.request
 
 import com.mercadolivro.exceptions.ErrorMessageConstants
+import com.mercadolivro.validation.EmailAvailable
+import com.mercadolivro.validation.NameAvailable
 import javax.validation.constraints.Email
 import javax.validation.constraints.NotEmpty
 

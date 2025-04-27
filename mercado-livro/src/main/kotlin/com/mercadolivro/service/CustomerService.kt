@@ -2,7 +2,9 @@ package com.mercadolivro.service
 
 import com.mercadolivro.enums.CustomerStatus
 import com.mercadolivro.enums.Erros
+import com.mercadolivro.exceptions.ErrorMessageConstants
 import com.mercadolivro.exceptions.NotFoundException
+import com.mercadolivro.exceptions.NotPutException
 import com.mercadolivro.model.CustomerModel
 import com.mercadolivro.repository.CustomerRepository
 import org.springframework.data.domain.Page
@@ -32,6 +34,8 @@ class CustomerService(
 
     fun update(customer: CustomerModel) {
         ensureCustomerExists(customer.id)
+        ensureCustomerPutEmailOrNameExists(customer)
+
         customerRepository.save(customer)
     }
 
@@ -48,4 +52,18 @@ class CustomerService(
             throw NotFoundException(Erros.CustomerNotFound.message.format(id))
         }
     }
+
+    private fun ensureCustomerPutEmailOrNameExists(customer: CustomerModel){
+        val customerOld = findById(customer.id!!)
+        if(customerOld.name != customer.name){
+            if(!nameAvailable(customer.name)) throw NotPutException(ErrorMessageConstants.NAME_OR_EMAIL_USED)
+        }
+        if(customerOld.email != customer.email){
+            if(!emailAvailable(customer.email)) throw NotPutException(ErrorMessageConstants.NAME_OR_EMAIL_USED)
+        }
+    }
+
+    fun emailAvailable(email: String): Boolean = !customerRepository.existsByEmail(email)
+    fun nameAvailable(name: String): Boolean = !customerRepository.existsByName(name)
 }
+
