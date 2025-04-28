@@ -5,6 +5,8 @@
 - Iniciar o docker-compose
 `docker-compose up -d`
 
+## Swagger
+- http://localhost:8080/swagger-ui/index.html#/
 ## Customer
 + get   
 {host}/customer  
