@@ -7,8 +7,7 @@ import com.mercadolivro.extension.toCustomerModel
 import com.mercadolivro.extension.toResponse
 import com.mercadolivro.service.CustomerService
 import org.springframework.data.domain.Page
-import org.springframework.data.domain.Pageable
-import org.springframework.data.web.PageableDefault
+import org.springframework.data.domain.PageRequest
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
 import javax.validation.Valid
@@ -20,7 +19,12 @@ class CustomerController(
 ) {
 
     @GetMapping
-    fun getAll(@RequestParam name: String?, @PageableDefault(page =0, size = 10) pageable: Pageable): Page<CustomerReponse> {
+    fun getAll(
+        @RequestParam name: String?,
+        @RequestParam(defaultValue = "0") page: Int,
+        @RequestParam(defaultValue = "10") size: Int
+    ): Page<CustomerReponse> {
+        val pageable = PageRequest.of(page, size)
         return customerService.getAll(name,pageable).map { it.toResponse()}
     }
 
