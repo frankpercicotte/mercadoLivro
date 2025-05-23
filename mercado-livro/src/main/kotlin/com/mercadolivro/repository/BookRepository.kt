@@ -12,7 +12,7 @@ import org.springframework.data.repository.CrudRepository
 interface BookRepository : JpaRepository<BookModel, Int> {
 
     fun findByNameContaining(name: String): List<BookModel>
-    abstract fun findByStatus(status: BookStatus, pageable: Pageable): Page<BookModel>
+    fun findByStatus(status: BookStatus, pageable: Pageable): Page<BookModel>
     fun findByCustomer(customer: CustomerModel): List<BookModel>
     //fun findAll(pageable: Pageable): Page<BookModel> --> It is used when CrudRepository
 }

@@ -31,9 +31,20 @@ class BookService(
         return bookRepository.findById(id).orElseThrow(){ NotFoundException(Erros.BookNotFound.message.format(id)) }
     }
 
+    fun findAllByIds(bookIds: Set<Int>): List<BookModel> {
+        return bookRepository.findAllById(bookIds).toList()
+    }
+
     fun update(id: Int, book: PutBookRequest) {
         val bookSaved = findById(id)
         bookRepository.save(book.toBookModel(bookSaved))
+    }
+
+    fun purchase(books: MutableList<BookModel>) {
+        books.map {
+            it.status = BookStatus.VENDIDO
+        }
+        bookRepository.saveAll(books)
     }
 
     //Never delete book, only change status to DELETADO
