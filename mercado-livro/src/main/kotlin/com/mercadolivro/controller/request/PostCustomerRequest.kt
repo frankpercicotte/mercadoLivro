@@ -11,7 +11,12 @@ data class PostCustomerRequest (
     @field:NotEmpty(message = ErrorMessageConstants.NAME_REQUIRED)
     @NameAvailable()
     var name: String,
+
     @field:Email(message = ErrorMessageConstants.EMAIL_INVALID)
     @EmailAvailable()
-    var email: String
+    var email: String,
+
+    @field:NotEmpty(message = ErrorMessageConstants.PASSWORD_REQUIRED)
+    var password: String,
+
 )
