@@ -11,4 +11,5 @@ object ErrorMessageConstants {
     const val EMAIL_INVALID = "The email provided is invalid."
     const val EMAIL_USED = "Email is already in use."
     const val PRICE_NOT_NULL = "The price cannot be null."
+    const val PASSWORD_REQUIRED = "The password field is reequired"
 }
