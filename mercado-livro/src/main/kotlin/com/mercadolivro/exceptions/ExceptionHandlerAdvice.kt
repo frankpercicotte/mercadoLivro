@@ -58,4 +58,16 @@ class ExceptionHandlerAdvice {
         )
         return ResponseEntity(error, HttpStatus.CONFLICT)
     }
+
+    @ExceptionHandler(AuthenticationException::class)
+    fun handleAuthenticationException(ex: AuthenticationException): ResponseEntity<ErrorResponse> {
+        val error = ErrorResponse(
+            message = ex.message ?: "Authentication error.",
+            status = HttpStatus.FORBIDDEN.value(),
+            timestamp = LocalDateTime.now(),
+            null
+
+        )
+        return ResponseEntity(error, HttpStatus.FORBIDDEN)
+    }
 }
