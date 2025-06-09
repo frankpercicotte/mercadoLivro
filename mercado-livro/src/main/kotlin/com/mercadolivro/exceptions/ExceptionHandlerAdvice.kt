@@ -7,65 +7,86 @@ import org.springframework.web.bind.MethodArgumentNotValidException
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.RestControllerAdvice
 import java.time.LocalDateTime
+import javax.servlet.http.HttpServletRequest
 
 @RestControllerAdvice
 class ExceptionHandlerAdvice {
     @ExceptionHandler(NotFoundException::class)
-    fun handleNotFound(ex: NotFoundException): ResponseEntity<ErrorResponse> {
+    fun handleNotFound(
+        ex: NotFoundException,
+        request: HttpServletRequest
+    ): ResponseEntity<ErrorResponse> {
         val error = ErrorResponse(
             message = ex.message ?: "Resource not found.",
             status = HttpStatus.NOT_FOUND.value(),
             timestamp = LocalDateTime.now(),
-            null
+            null,
+            path = request.requestURI
         )
         return ResponseEntity(error, HttpStatus.NOT_FOUND)
     }
 
     @ExceptionHandler(MethodArgumentNotValidException::class)
-    fun handleNew(ex: MethodArgumentNotValidException): ResponseEntity<ErrorResponse> {
+    fun handleNew(
+        ex: MethodArgumentNotValidException,
+        request: HttpServletRequest
+    ): ResponseEntity<ErrorResponse> {
         val objectName = ex.bindingResult.objectName
         val fieldErrorCount = ex.bindingResult.fieldErrors.size
         val error = ErrorResponse(
             message = ErrorMessageConstants.invalidRequestMessage(objectName, fieldErrorCount),
             status = HttpStatus.BAD_REQUEST.value(),
             timestamp = LocalDateTime.now(),
-            ex.bindingResult.fieldErrors.map{ FieldErrorResponse(it.defaultMessage ?: "invalid", it.field )}
+            ex.bindingResult.fieldErrors.map{ FieldErrorResponse(it.defaultMessage ?: "invalid", it.field )},
+            path = request.requestURI
 
         )
         return ResponseEntity(error, HttpStatus.BAD_REQUEST)
     }
 
     @ExceptionHandler(NotDeleteException::class)
-    fun handleNotDelete(ex: NotDeleteException): ResponseEntity<ErrorResponse> {
+    fun handleNotDelete(
+        ex: NotDeleteException,
+        request: HttpServletRequest
+    ): ResponseEntity<ErrorResponse> {
         val error = ErrorResponse(
             message = ex.message ?: "Resource cannot delete.",
             status = HttpStatus.CONFLICT.value(),
             timestamp = LocalDateTime.now(),
-            null
+            null,
+            path = request.requestURI
 
         )
         return ResponseEntity(error, HttpStatus.CONFLICT)
     }
 
     @ExceptionHandler(NotPutException::class)
-    fun handleNotPut(ex: NotPutException): ResponseEntity<ErrorResponse> {
+    fun handleNotPut(
+        ex: NotPutException,
+        request: HttpServletRequest
+    ): ResponseEntity<ErrorResponse> {
         val error = ErrorResponse(
             message = ex.message ?: "Resource cannot update.",
             status = HttpStatus.CONFLICT.value(),
             timestamp = LocalDateTime.now(),
-            null
+            null,
+            path = request.requestURI
 
         )
         return ResponseEntity(error, HttpStatus.CONFLICT)
     }
 
-    @ExceptionHandler(AuthenticationException::class)
-    fun handleAuthenticationException(ex: AuthenticationException): ResponseEntity<ErrorResponse> {
+    @ExceptionHandler(CustomAuthenticationException::class)
+    fun handleAuthenticationException(
+        ex: CustomAuthenticationException,
+        request: HttpServletRequest
+    ): ResponseEntity<ErrorResponse> {
         val error = ErrorResponse(
             message = ex.message ?: "Authentication error.",
             status = HttpStatus.FORBIDDEN.value(),
             timestamp = LocalDateTime.now(),
-            null
+            null,
+            path = request.requestURI
 
         )
         return ResponseEntity(error, HttpStatus.FORBIDDEN)

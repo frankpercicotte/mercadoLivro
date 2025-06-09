@@ -6,4 +6,5 @@ enum class Erros(val message: String) {
     BookCantBeDelete("This book [ %s ] can't be delete, because status is %s."),
     AuthenticationException("Authentication Fail."),
     UserNotFound("User not Found."),
+    AuthenticationTokenException("Invalid authentication token")
 }
