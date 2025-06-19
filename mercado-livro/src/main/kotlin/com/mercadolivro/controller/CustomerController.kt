@@ -5,6 +5,7 @@ import com.mercadolivro.controller.request.PutCustomerRequest
 import com.mercadolivro.controller.response.CustomerReponse
 import com.mercadolivro.extension.toCustomerModel
 import com.mercadolivro.extension.toResponse
+import com.mercadolivro.security.UserCanOnlyAccessTheirOwnResource
 import com.mercadolivro.service.CustomerService
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
@@ -35,6 +36,7 @@ class CustomerController(
     }
 
     @GetMapping("/{id}")
+    @UserCanOnlyAccessTheirOwnResource
     fun getCustomer(@PathVariable id: Int): CustomerReponse {
         return customerService.findById(id).toResponse()
     }
@@ -42,8 +44,8 @@ class CustomerController(
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     fun update(@PathVariable id: Int, @RequestBody @Valid customer: PutCustomerRequest) {
-        val custmerSaved = customerService.findById(id)
-        customerService.update(customer.toCustomerModel(custmerSaved))
+        val customerSaved = customerService.findById(id)
+        customerService.update(customer.toCustomerModel(customerSaved))
     }
 
     @DeleteMapping("/{id}")
