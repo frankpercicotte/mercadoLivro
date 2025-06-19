@@ -91,4 +91,19 @@ class ExceptionHandlerAdvice {
         )
         return ResponseEntity(error, HttpStatus.FORBIDDEN)
     }
+
+    @ExceptionHandler(AccessDeniedException::class)
+    fun AccessDeniedException(
+        ex: AccessDeniedException,
+        request: HttpServletRequest
+    ): ResponseEntity<ErrorResponse> {
+        val error = ErrorResponse(
+            message = ex.message ?: "Resource forbidden.",
+            status = HttpStatus.FORBIDDEN.value(),
+            timestamp = LocalDateTime.now(),
+            null,
+            path = request.requestURI
+        )
+        return ResponseEntity(error, HttpStatus.FORBIDDEN)
+    }
 }
