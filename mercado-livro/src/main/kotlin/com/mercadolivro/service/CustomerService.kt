@@ -21,10 +21,11 @@ class CustomerService(
 ) {
 
     fun getAll(name: String?, pageable: Pageable): Page<CustomerModel> {
-        name?.let {
-            return customerRepository.findByNameContaining(it, pageable)
+        return if (!name.isNullOrBlank()) {
+            customerRepository.findByNameContaining(name, pageable)
+        } else {
+            customerRepository.findAll(pageable)
         }
-        return customerRepository.findAll(pageable)
     }
 
     fun create(customer: CustomerModel) {
