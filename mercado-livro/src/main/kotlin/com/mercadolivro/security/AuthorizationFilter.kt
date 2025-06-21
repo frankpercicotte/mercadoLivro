@@ -1,5 +1,5 @@
 package com.mercadolivro.security
-import com.mercadolivro.enums.Erros
+import com.mercadolivro.enums.Errors
 import com.mercadolivro.exceptions.CustomAuthenticationException
 import com.mercadolivro.service.UserDetailsCustomService
 import org.springframework.security.authentication.AuthenticationManager
@@ -34,7 +34,7 @@ class AuthorizationFilter(
 
     private fun getAuthentication(token: String): UsernamePasswordAuthenticationToken {
         if(!jwtUtil.isValidToken(token)) {
-            throw CustomAuthenticationException(Erros.AuthenticationTokenException.toString())
+            throw CustomAuthenticationException(Errors.AuthenticationTokenException.toString())
         }
         val subject = jwtUtil.getSubject(token)
         val customer = userDetails.loadUserByUsername(subject)
