@@ -2,7 +2,7 @@ package com.mercadolivro.service
 
 import com.mercadolivro.controller.request.PutBookRequest
 import com.mercadolivro.enums.BookStatus
-import com.mercadolivro.enums.Erros
+import com.mercadolivro.enums.Errors
 import com.mercadolivro.exceptions.NotDeleteException
 import com.mercadolivro.extension.toBookModel
 import com.mercadolivro.model.BookModel
@@ -11,7 +11,6 @@ import com.mercadolivro.exceptions.NotFoundException
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
-import kotlin.jvm.Throws
 
 
 @Service
@@ -28,7 +27,7 @@ class BookService(
     fun findActives(pageable: Pageable): Page<BookModel> = bookRepository.findByStatus(BookStatus.ATIVO, pageable)
 
     fun findById(id: Int): BookModel{
-        return bookRepository.findById(id).orElseThrow(){ NotFoundException(Erros.BookNotFound.message.format(id)) }
+        return bookRepository.findById(id).orElseThrow(){ NotFoundException(Errors.BookNotFound.message.format(id)) }
     }
 
     fun findAllByIds(bookIds: Set<Int>): List<BookModel> {
@@ -51,7 +50,7 @@ class BookService(
     fun delete(id: Int) {
         val book : BookModel = findById(id)
         if (booksSet.contains(book.status)){
-            throw NotDeleteException(Erros.BookCantBeDelete.message.format(book.name, book.status))
+            throw NotDeleteException(Errors.BookCantBeDelete.message.format(book.name, book.status))
         }
         book.status = BookStatus.DELETADO
         bookRepository.save(book)

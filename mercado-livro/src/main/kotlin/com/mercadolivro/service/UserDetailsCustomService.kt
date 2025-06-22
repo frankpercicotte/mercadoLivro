@@ -1,6 +1,6 @@
 package com.mercadolivro.service
 
-import com.mercadolivro.enums.Erros
+import com.mercadolivro.enums.Errors
 import com.mercadolivro.exceptions.CustomAuthenticationException
 import com.mercadolivro.repository.CustomerRepository
 import com.mercadolivro.security.UserCustomDetails
@@ -15,7 +15,7 @@ class UserDetailsCustomService(
 
     override fun loadUserByUsername(id: String): UserDetails {
         val customer = customerRepository.findById(id.toInt())
-            .orElseThrow { CustomAuthenticationException(Erros.AuthenticationException.toString()) }
+            .orElseThrow { CustomAuthenticationException(Errors.AuthenticationException.toString()) }
         return UserCustomDetails(customer)
     }
 }

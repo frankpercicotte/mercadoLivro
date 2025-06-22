@@ -1,6 +1,6 @@
 package com.mercadolivro.security
 
-import com.mercadolivro.enums.Erros
+import com.mercadolivro.enums.Errors
 import com.mercadolivro.exceptions.CustomAuthenticationException
 import io.jsonwebtoken.Claims
 import io.jsonwebtoken.Jwts
@@ -56,7 +56,7 @@ class JwtUtil {
                 .parseSignedClaims(token)
                 .payload
         } catch (ex: Exception) {
-            throw CustomAuthenticationException(Erros.AuthenticationTokenException.toString())
+            throw CustomAuthenticationException(Errors.AuthenticationTokenException.toString())
         }
     }
 

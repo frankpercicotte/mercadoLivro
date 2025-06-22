@@ -1,7 +1,7 @@
 package com.mercadolivro.service
 
 import com.mercadolivro.enums.CustomerStatus
-import com.mercadolivro.enums.Erros
+import com.mercadolivro.enums.Errors
 import com.mercadolivro.enums.Role
 import com.mercadolivro.exceptions.ErrorMessageConstants
 import com.mercadolivro.exceptions.NotFoundException
@@ -21,10 +21,11 @@ class CustomerService(
 ) {
 
     fun getAll(name: String?, pageable: Pageable): Page<CustomerModel> {
-        name?.let {
-            return customerRepository.findByNameContaining(it, pageable)
+        return if (!name.isNullOrBlank()) {
+            customerRepository.findByNameContaining(name, pageable)
+        } else {
+            customerRepository.findAll(pageable)
         }
-        return customerRepository.findAll(pageable)
     }
 
     fun create(customer: CustomerModel) {
@@ -36,7 +37,7 @@ class CustomerService(
     }
 
     fun findById(id: Int): CustomerModel {
-        return customerRepository.findById(id).orElseThrow{NotFoundException(Erros.CustomerNotFound.message.format(id))}
+        return customerRepository.findById(id).orElseThrow{NotFoundException(Errors.CustomerNotFound.message.format(id))}
     }
 
     fun update(customer: CustomerModel) {
@@ -56,7 +57,7 @@ class CustomerService(
 
     private fun ensureCustomerExists(id: Int?) {
         if (id == null || !customerRepository.existsById(id)) {
-            throw NotFoundException(Erros.CustomerNotFound.message.format(id))
+            throw NotFoundException(Errors.CustomerNotFound.message.format(id))
         }
     }
 

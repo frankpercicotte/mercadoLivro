@@ -1,9 +1,8 @@
 package com.mercadolivro.security
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.mercadolivro.controller.response.ErrorResponse
-import com.mercadolivro.enums.Erros
+import com.mercadolivro.enums.Errors
 import org.springframework.security.core.AuthenticationException
 import org.springframework.security.web.AuthenticationEntryPoint
 import org.springframework.stereotype.Component
@@ -22,7 +21,7 @@ class CustomAuthenticationEntryPoint(
         authException: AuthenticationException
     ) {
         val error = ErrorResponse(
-            message = Erros.AuthenticationTokenException.message,
+            message = Errors.AuthenticationTokenException.message,
             status = HttpServletResponse.SC_UNAUTHORIZED,
             timestamp = LocalDateTime.now(),
             errors = null,
