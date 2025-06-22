@@ -1,11 +1,10 @@
 package com.mercadolivro.service
 
 import com.mercadolivro.enums.CustomerStatus
-import com.mercadolivro.enums.Role
 import com.mercadolivro.exceptions.NotFoundException
 import com.mercadolivro.exceptions.NotPutException
-import com.mercadolivro.model.CustomerModel
 import com.mercadolivro.repository.CustomerRepository
+import com.mercadolivro.utils.buildCustomer
 import io.mockk.*
 import io.mockk.impl.annotations.InjectMockKs
 import io.mockk.impl.annotations.MockK
@@ -300,22 +299,6 @@ class CustomecrServiceTest {
         assertFalse(emailAvailable)
         verify(exactly = 1) { customerRepository.existsByEmail(email) }
 
-    }
-
-    fun buildCustomer(
-        id: Int? = null,
-        name: String? = null,
-        email: String? = null,
-        password: String? = null
-    ): CustomerModel {
-        return CustomerModel(
-            id = id,
-            name = name ?: "customer name",
-            email = email ?: "${UUID.randomUUID()}@email.com",
-            status = CustomerStatus.ATIVO,
-            password = password ?: "password",
-            role = setOf(Role.CUSTOMER)
-        )
     }
 
 }
